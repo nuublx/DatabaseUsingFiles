@@ -18,6 +18,12 @@ private:
     char *dept_id = new char[30]; ///secondary key
     char *emp_name = new char[50];
     char *emp_pos = new char[50];
+    char delim = '|';
+    int empidSize;
+    int depidSize;
+    int nameSize;
+    int posSize;
+    int RecordSize;
 
 public:
     Employee() {}
@@ -27,6 +33,11 @@ public:
         strcpy(this->dept_id, dept_id);
         strcpy(this->emp_name, emp_name);
         strcpy(this->emp_pos, emp_pos);
+        empidSize = arrsize(this->get_emp_id());
+        depidSize = arrsize(this->get_dept_id());
+        nameSize = arrsize(this->get_emp_name());
+        posSize = arrsize(this->get_emp_pos());
+        RecordSize = empidSize + depidSize+nameSize + posSize;
 
     }
 
@@ -68,6 +79,49 @@ public:
         cout << "Employee name: " << this->get_emp_name() << endl;
         cout << "Employee Position: " << this->get_emp_pos() << endl;
         cout << "-------------------------------------------------\n";
+    }
+    void writeEmployee(fstream &file) {
+
+        file << (RecordSize+5);
+
+        file << delim;
+
+        file.write(this->get_emp_id(), empidSize);
+
+        file << delim;
+
+        file.write(this->get_dept_id(), depidSize);
+
+        file << delim;
+
+        file.write(this->get_emp_name(), nameSize);
+
+        file << delim;
+
+        file.write(this->get_emp_pos(), posSize);
+
+        file << delim;
+    }
+
+    void readEmployee(ifstream &file) {
+        string x;
+        char c;
+        int nextDel = -1;
+
+        if (c == DELETE_FLAG) {
+            cout << "deleted record" << endl;
+            return;
+        }
+        getline(file, x, '|');
+        this->RecordSize = stoi(x);
+        getline(file, x, '|');
+        this->set_emp_id(x.c_str());
+        getline(file, x, '|');
+        this->set_dept_id(x.c_str());
+        getline(file, x, '|');
+        this->set_emp_name(x.c_str());
+        getline(file, x, '|');
+        this->set_emp_pos(x.c_str());
     }
 };
 
@@ -127,7 +181,7 @@ public:
 
     void writeDepartment(fstream &file) {
 
-        file << (RecordSize);
+        file << (RecordSize+4);
 
         file << delim;
 
@@ -178,6 +232,7 @@ void fillEmployees(fstream &file) { ///fills Employees Array
     for (int i = 0; i < 10; i++) {
         employees[i] = new Employee(to_string(i + 1).c_str(), to_string((i % 5) + 1).c_str(),
                                     (names[i]).c_str(), x.c_str());
+        employees[i]->writeEmployee(file);
         employees[i]->print();
         cout << endl;
     }
