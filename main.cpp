@@ -117,7 +117,7 @@ public:
             cout << "deleted record" << endl;
             return;
         }
-        file.seekg(offset, ios::cur);
+        file.seekg(offset, ios::beg);
         getline(file, x, '|');
         this->RecordSize = stoi(x);
         getline(file, x, '|');
@@ -266,21 +266,6 @@ Employee *takeEmployeeInfo() {
                         name.c_str(), position.c_str());
 }
 
-struct empID {
-    char *ID = new char[13];
-    int next;
-
-    empID() {
-        next = -1;
-    }
-
-    empID(const char *ID) {
-        strcpy(this->ID, ID);
-        next = -1;
-    }
-};
-
-
 Employee *employee;
 Department *departments[5];
 
@@ -312,6 +297,69 @@ void readPrimaryEmployee(map<int, int> &pri) {
     Index.close();
 }
 
+int getLastOffset(fstream &empFile, map<int, int> &priIndex) {
+    if (!priIndex.empty()) {
+        Employee lastEmp;
+        int offset = std::max_element(priIndex.begin(), priIndex.end(),
+                                      [](const std::pair<int, int> &a, const std::pair<int, int> &b) -> bool {
+                                          return a.second < b.second;
+                                      })->second;
+        lastEmp.readEmployee(empFile, offset);
+        return offset + lastEmp.get_record_size() + to_string(lastEmp.get_record_size()).size();
+    } else
+        return 0;
+}
+
+void writeSecondaryEmployee(map<int, vector<int>> secIndex) {
+    fstream IndexKey, IndexList;
+    IndexKey.open("EmployeeSecondaryIndexKey.txt", ios::out);
+    IndexList.open("EmployeeSecondaryIndexList.txt", ios::out);
+    int offset = 0, inBetween = 0;
+    for (auto it: secIndex) {
+        IndexKey << it.first << '|';
+        int firstSize = 0, lastSize = 0;
+        for (int i = 0; i < it.second.size(); i++) {
+            string str = to_string(it.second[i]);
+
+            if (i == 0) {
+                IndexList << it.second[i] << '|' << i - 1 << '|';
+                firstSize = to_string(it.second[i]).size() + 4;
+            } else if (i + 1 == it.second.size()) {
+                IndexList << it.second[i] << '|' << offset << '|';
+                lastSize = to_string(it.second[i]).size() + to_string(i).size() + 2;
+            } else {
+                IndexList << it.second[i] << '|' << offset << '|';
+                offset += to_string(it.second[i]).size() + to_string(i).size() + 2;
+            }
+        }
+        offset += firstSize;
+        IndexKey << offset << '|';
+        offset += lastSize;
+    }
+    IndexKey.close();
+    IndexList.close();
+}
+
+/*
+void readSecondaryEmployee(  map<int, vector<int>> secIndex) {
+    fstream Index;
+    string read1, read2;
+
+    Index.open("EmployeePrimaryIndex.txt", ios::in);
+    while (!Index.eof()) {
+        int ID;
+        int offset;
+        getline(Index, read1, '|');
+        if (read1.empty())
+            break;
+        ID = stoi(read1);
+        getline(Index, read2, '|');
+        offset = stoi(read2);
+        pri.insert(make_pair(ID, offset));
+    }
+    Index.close();
+}
+ */
 void addNewEmployee() {
     fstream empFile;
     empFile.open("Employees.txt", ios::in | ios::out | ios::app);
@@ -320,42 +368,35 @@ void addNewEmployee() {
     cin >> numberOfEmployees;
     map<int, int> priIndex;
     readPrimaryEmployee(priIndex);
-    map<char *, vector<char *>> secIndex;
-    int offset;
-    if (!priIndex.empty()) {
-        Employee lastEmp;
-        offset = std::max_element(priIndex.begin(), priIndex.end(),
-                                  [](const std::pair<int, int> &a, const std::pair<int, int> &b) -> bool {
-                                      return a.second < b.second;
-                                  })->second;
-        lastEmp.readEmployee(empFile, offset);
-        offset += lastEmp.get_record_size() + to_string(lastEmp.get_record_size()).size();
-    } else
-        offset = 0;
+
+    map<int, vector<int>> secIndex;
+
+    int offset = getLastOffset(empFile, priIndex);
+
     for (int i = 0; i < numberOfEmployees; i++) {
+
         employee = takeEmployeeInfo();
+
         priIndex[stoi((string) employee->get_emp_id())] = offset;
-        secIndex[employee->get_dept_id()].push_back(employee->get_emp_id());
+
+        secIndex[stoi((string) employee->get_dept_id())].push_back(stoi((string) employee->get_emp_id()));
+
         employee->writeEmployee(empFile);
+
         employee->print();
-        offset += employee->get_record_size() + 2;
+
+        offset += employee->get_record_size() + to_string(employee->get_record_size()).size();
+
         cout << endl;
+        // delete employee from memory
         delete employee;
+
     }
     writePrimaryEmployee(priIndex);
+    writeSecondaryEmployee(secIndex);
     empFile.close();
 }
 
-struct depID {
-    int offset;
-    char *ID = new char[13];
-    depID *next;
-
-    depID(int offset, const char *ID) {
-        this->offset = offset;
-        strcpy(this->ID, ID);
-    }
-};
 
 void fillDepartments(fstream &file) { ///fills Departments Array
     for (int i = 1; i <= 5; i++) {
@@ -372,7 +413,6 @@ void testCase() {
 
     // depFile.open("Departments.txt", ios::out | ios::app);
     addNewEmployee();
-    //  addNewEmployee();
 /*
     //fillEmployees(empFile);
     fillDepartments(depFile);
