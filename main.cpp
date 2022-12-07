@@ -37,7 +37,7 @@ public:
         depidSize = arrsize(this->get_dept_id());
         nameSize = arrsize(this->get_emp_name());
         posSize = arrsize(this->get_emp_pos());
-        RecordSize = empidSize + depidSize+nameSize + posSize;
+        RecordSize = empidSize + depidSize + nameSize + posSize + 5;
 
     }
 
@@ -73,6 +73,10 @@ public:
         return this->emp_pos;
     }
 
+    int get_record_size() {
+        return this->RecordSize;
+    }
+
     void print() {
         cout << "Employee ID: " << this->get_emp_id() << endl;
         cout << "Department ID: " << this->get_dept_id() << endl;
@@ -80,9 +84,10 @@ public:
         cout << "Employee Position: " << this->get_emp_pos() << endl;
         cout << "-------------------------------------------------\n";
     }
+
     void writeEmployee(fstream &file) {
 
-        file << (RecordSize+5);
+        file << (RecordSize);
 
         file << delim;
 
@@ -103,7 +108,7 @@ public:
         file << delim;
     }
 
-    void readEmployee(ifstream &file) {
+    void readEmployee(fstream &file, int offset) {
         string x;
         char c;
         int nextDel = -1;
@@ -112,6 +117,7 @@ public:
             cout << "deleted record" << endl;
             return;
         }
+        file.seekg(offset, ios::cur);
         getline(file, x, '|');
         this->RecordSize = stoi(x);
         getline(file, x, '|');
@@ -181,7 +187,7 @@ public:
 
     void writeDepartment(fstream &file) {
 
-        file << (RecordSize+4);
+        file << (RecordSize + 4);
 
         file << delim;
 
@@ -218,25 +224,138 @@ public:
     }
 };
 
+
 ///Some Random Names to make data look real
 string names[] = {"Zeyad D.", "Youssef W.", "Yahia H.", "Yahia A.", "David M.", "Ahmed M.", "Ahmed N.", "Eyad R.",
                   "Michael E.", "A random dude"};
 string deps[] = {"IS", "CS", "AI", "DS", "IT"};
 string depsMangers[] = {"Ahmed", "Mohamed", "Sayed", "Mahmoud", "Mostafa"};
 
-Employee *employees[10];
-Department *departments[5];
-
+/*
 void fillEmployees(fstream &file) { ///fills Employees Array
     string x = "Software Engineer";
-    for (int i = 0; i < 10; i++) {
+    int numberOfEmployees;
+    cout << "Enter Number of employees: ";
+    cin >> numberOfEmployees;
+    for (int i = 0; i < numberOfEmployees; i++) {
         employees[i] = new Employee(to_string(i + 1).c_str(), to_string((i % 5) + 1).c_str(),
-                                    (names[i]).c_str(), x.c_str());
+                                    (names[i % 10]).c_str(), x.c_str());
         employees[i]->writeEmployee(file);
         employees[i]->print();
         cout << endl;
     }
 }
+ */
+
+Employee *takeEmployeeInfo() {
+    cout << "Enter Employee ID: ";
+    string ID;
+    cin >> ID;
+    cout << "Enter Department ID: ";
+    string deptID;
+    cin >> deptID;
+    cout << "Enter Employee Name: ";
+    string name;
+    cin.ignore();
+    getline(cin, name, '\n');
+
+    cout << "Enter Employee Position: ";
+    string position;
+    getline(cin, position, '\n');
+    return new Employee(ID.c_str(), deptID.c_str(),
+                        name.c_str(), position.c_str());
+}
+
+struct empID {
+    char *ID = new char[13];
+    int next;
+
+    empID() {
+        next = -1;
+    }
+
+    empID(const char *ID) {
+        strcpy(this->ID, ID);
+        next = -1;
+    }
+};
+
+
+Employee *employee;
+Department *departments[5];
+
+void writePrimaryEmployee(map<int, int> pri) {
+    fstream Index;
+    Index.open("EmployeePrimaryIndex.txt", ios::out);
+    for (auto it: pri) {
+        Index << it.first << '|' << it.second << '|';
+    }
+    Index.close();
+}
+
+void readPrimaryEmployee(map<int, int> &pri) {
+    fstream Index;
+    string read1, read2;
+
+    Index.open("EmployeePrimaryIndex.txt", ios::in);
+    while (!Index.eof()) {
+        int ID;
+        int offset;
+        getline(Index, read1, '|');
+        if (read1.empty())
+            break;
+        ID = stoi(read1);
+        getline(Index, read2, '|');
+        offset = stoi(read2);
+        pri.insert(make_pair(ID, offset));
+    }
+    Index.close();
+}
+
+void addNewEmployee() {
+    fstream empFile;
+    empFile.open("Employees.txt", ios::in | ios::out | ios::app);
+    int numberOfEmployees;
+    cout << "Enter Number of employees: ";
+    cin >> numberOfEmployees;
+    map<int, int> priIndex;
+    readPrimaryEmployee(priIndex);
+    map<char *, vector<char *>> secIndex;
+    int offset;
+    if (!priIndex.empty()) {
+        Employee lastEmp;
+        offset = std::max_element(priIndex.begin(), priIndex.end(),
+                                  [](const std::pair<int, int> &a, const std::pair<int, int> &b) -> bool {
+                                      return a.second < b.second;
+                                  })->second;
+        lastEmp.readEmployee(empFile, offset);
+        offset += lastEmp.get_record_size() + to_string(lastEmp.get_record_size()).size();
+    } else
+        offset = 0;
+    for (int i = 0; i < numberOfEmployees; i++) {
+        employee = takeEmployeeInfo();
+        priIndex[stoi((string) employee->get_emp_id())] = offset;
+        secIndex[employee->get_dept_id()].push_back(employee->get_emp_id());
+        employee->writeEmployee(empFile);
+        employee->print();
+        offset += employee->get_record_size() + 2;
+        cout << endl;
+        delete employee;
+    }
+    writePrimaryEmployee(priIndex);
+    empFile.close();
+}
+
+struct depID {
+    int offset;
+    char *ID = new char[13];
+    depID *next;
+
+    depID(int offset, const char *ID) {
+        this->offset = offset;
+        strcpy(this->ID, ID);
+    }
+};
 
 void fillDepartments(fstream &file) { ///fills Departments Array
     for (int i = 1; i <= 5; i++) {
@@ -247,12 +366,15 @@ void fillDepartments(fstream &file) { ///fills Departments Array
     }
 }
 
-void testCase() {
-    fstream empFile, depFile;
-    empFile.open("Employees.txt", ios::in | ios::out | ios::app);
-    depFile.open("Departments.txt", ios::out | ios::app);
 
-    fillEmployees(empFile);
+void testCase() {
+    fstream depFile;
+
+    // depFile.open("Departments.txt", ios::out | ios::app);
+    addNewEmployee();
+    //  addNewEmployee();
+/*
+    //fillEmployees(empFile);
     fillDepartments(depFile);
     depFile.close();
     ifstream depInFile;
@@ -260,6 +382,7 @@ void testCase() {
     Department dep1;
     dep1.readDepartment(depInFile);
     dep1.print();
+    */
 }
 
 int main() {
