@@ -186,7 +186,7 @@ void writeSecondaryEmployee(map<int, vector<int>> &secIndex) {
 		}
 		if (!f) {
 			for (int i = 0; i < it.second.size(); i++) {
-				string str = to_string(it.second[i]);
+				//string str = to_string(it.second[i]);
 
 				if (i == 0) {
 					IndexList << it.second[0] << '|' << -1 << '|';
@@ -234,6 +234,13 @@ void readSecondaryEmployee(map<int, vector<int>> &sec) {
 		}
 		sec.insert(make_pair(depID, empIDS));
 	}
+    for (const auto &it: sec) {
+        cout << it.first << '\t';
+        for (auto it2: it.second) {
+            cout << it2 << " ";
+        }
+        cout << endl;
+    }
 	IndexKey.close();
 	IndexList.close();
 }
@@ -250,7 +257,7 @@ void addNewEmployee() {
 	readPrimaryEmployee(priIndex);
 
 	map<int, vector<int>> secIndex;
-
+    readSecondaryEmployee(secIndex);
 	int offset = getLastOffset(empFile, priIndex);
 
 	for (int i = 0; i < numberOfEmployees; i++) {
@@ -268,7 +275,7 @@ void addNewEmployee() {
 		offset += employee->get_record_size() + to_string(employee->get_record_size()).size();
 
 		cout << endl;
-// delete employee from memory
+        // delete employee from memory
 		delete employee;
 
 	}
@@ -292,4 +299,10 @@ void getEmployeeByID(int ID) {
 void getEmployeeByDep(int ID) {
 	map<int, vector<int>> secondaryIndex;
 	readSecondaryEmployee(secondaryIndex);
+    if (secondaryIndex.find(ID) != secondaryIndex.end()) {
+        for(auto employee: secondaryIndex[ID]) {
+            getEmployeeByID(employee);
+        }
+    }
+
 }

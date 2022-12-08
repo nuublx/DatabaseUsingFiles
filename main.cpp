@@ -157,10 +157,11 @@ void Menu() {
 
 	cout << "1-Add a New Employee." << endl;
 	cout << "2-search for an Employee by ID." << endl;
-	cout << "3-Exit." << endl;
+	cout << "3-search for an Employee by Department ID." << endl;
+	cout << "4-Exit." << endl;
 	int choice;
 	cin >> choice;
-	while (choice != 3) {
+	while (choice != 4) {
 		switch (choice) {
 			case 1: {
 				addNewEmployee();
@@ -173,12 +174,20 @@ void Menu() {
 				getEmployeeByID(ID);
 				break;
 			}
+            case 3: {
+                cout << "Enter Department ID: ";
+                int ID;
+                cin >> ID;
+                getEmployeeByDep(ID);
+                break;
+            }
 			default:
 				break;
 		}
 		cout << "1-Add a New Employee." << endl;
 		cout << "2-search for an Employee by ID." << endl;
-		cout << "3-Exit." << endl;
+        cout << "3-search for an Employee by Department ID." << endl;
+        cout << "4-Exit." << endl;
 		cin >> choice;
 	}
 }

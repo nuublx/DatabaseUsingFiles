@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "filesProject::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-filesProject-Debug-9b9a10e7a9682130ec96.json",
+					"jsonFile" : "target-filesProject-Debug-b0baee18506c83bd88f3.json",
 					"name" : "filesProject",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "X:/filesProject/cmake-build-debug",
-		"source" : "X:/filesProject"
+		"build" : "F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles/cmake-build-debug",
+		"source" : "F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 3
 	}
 }
