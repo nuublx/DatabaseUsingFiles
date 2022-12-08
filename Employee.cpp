@@ -234,13 +234,6 @@ void readSecondaryEmployee(map<int, vector<int>> &sec) {
 		}
 		sec.insert(make_pair(depID, empIDS));
 	}
-	for (const auto &it: sec) {
-		cout << it.first << '\t';
-		for (auto it2: it.second) {
-			cout << it2 << " ";
-		}
-		cout << endl;
-	}
 	IndexKey.close();
 	IndexList.close();
 }
@@ -298,4 +291,5 @@ void getEmployeeByID(int ID) {
 
 void getEmployeeByDep(int ID) {
 	map<int, vector<int>> secondaryIndex;
+	readSecondaryEmployee(secondaryIndex);
 }
