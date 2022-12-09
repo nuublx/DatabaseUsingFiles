@@ -1,0 +1,3 @@
+X:/filesProject/cmake-build-debug-coverage/CMakeFiles/filesProject.dir
+X:/filesProject/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
+X:/filesProject/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir

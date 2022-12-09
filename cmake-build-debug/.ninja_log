@@ -1,0 +1,9 @@
+# ninja log v5
+1	5804	6923005413029370	CMakeFiles/filesProject.dir/main.cpp.obj	a4e7576fd3f6f74c
+5	6166	6923005416642573	CMakeFiles/filesProject.dir/Employee.cpp.obj	214e90ae9f1f228d
+14	6210	6923005417104050	CMakeFiles/filesProject.dir/Department.cpp.obj	917f2f999a072605
+6210	6640	6923005421383016	filesProject.exe	563b70486bfdff31
+4	10048	6923028483562483	CMakeFiles/filesProject.dir/main.cpp.obj	a4e7576fd3f6f74c
+9	10920	6923028492244275	CMakeFiles/filesProject.dir/Employee.cpp.obj	214e90ae9f1f228d
+12	11261	6923028495691876	CMakeFiles/filesProject.dir/Department.cpp.obj	917f2f999a072605
+11261	11894	6923028501882024	filesProject.exe	563b70486bfdff31

@@ -4,8 +4,6 @@
 using namespace std;
 
 
-
-
 class Employee {
 private:
 	char *emp_id = new char[13]; ///primary key
@@ -20,7 +18,9 @@ private:
 	int RecordSize;
 
 public:
-	Employee() {}
+	Employee() {
+		RecordSize = -1;
+	}
 
 	Employee(const char *emp_id, const char *dept_id, const char *emp_name, const char *emp_pos);
 
@@ -63,11 +63,11 @@ void addNewEmployee();
 
 int arrsize(char *arr);
 
-void getEmployeeByID(int ID);
+Employee getEmployeeByID(int ID);
 
-void getEmployeeByDep(int ID);
+vector<Employee> getEmployeeByDep(int ID);
 
 void readSecondaryEmployee(map<int, vector<int>> &sec);
 
-void queryEmployee(string selected ,string attribute, string condition);
+void queryEmployee(string selected, string attribute, string condition);
 

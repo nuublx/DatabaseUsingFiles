@@ -7,11 +7,11 @@ using namespace std;
 
 
 int arrsize(char *arr) {
-    int number = 0;
-    while (*arr++) {
-        number++;
-    }
-    return number;
+	int number = 0;
+	while (*arr++) {
+		number++;
+	}
+	return number;
 }
 
 Employee::Employee(const char *emp_id, const char *dept_id, const char *emp_name, const char *emp_pos) {
@@ -234,21 +234,14 @@ void readSecondaryEmployee(map<int, vector<int>> &sec) {
 		}
 		sec.insert(make_pair(depID, empIDS));
 	}
-    for (const auto &it: sec) {
-        cout << it.first << '\t';
-        for (auto it2: it.second) {
-            cout << it2 << " ";
-        }
-        cout << endl;
-    }
 	IndexKey.close();
 	IndexList.close();
 }
 
-Employee *employee;
 
 void addNewEmployee() {
 	fstream empFile;
+	Employee *employee;
 	empFile.open("Employees.txt", ios::in | ios::out | ios::app);
 	int numberOfEmployees;
 	cout << "Enter Number of employees: ";
@@ -257,7 +250,7 @@ void addNewEmployee() {
 	readPrimaryEmployee(priIndex);
 
 	map<int, vector<int>> secIndex;
-    readSecondaryEmployee(secIndex);
+	readSecondaryEmployee(secIndex);
 	int offset = getLastOffset(empFile, priIndex);
 
 	for (int i = 0; i < numberOfEmployees; i++) {
@@ -272,10 +265,10 @@ void addNewEmployee() {
 
 		employee->print();
 
-		offset += employee->get_record_size() + to_string(employee->get_record_size()).size();
+		offset += (int) employee->get_record_size() + (int) to_string(employee->get_record_size()).size();
 
 		cout << endl;
-        // delete employee from memory
+		// delete employee from memory
 		delete employee;
 
 	}
@@ -284,40 +277,74 @@ void addNewEmployee() {
 	empFile.close();
 }
 
-void getEmployeeByID(int ID) {
+Employee getEmployeeByID(int ID) {
 	map<int, int> primaryIndex;
 	fstream employeeFile;
 	employeeFile.open("Employees.txt", ios::in);
 	readPrimaryEmployee(primaryIndex);
+	Employee employee1;
 	if (primaryIndex.find(ID) != primaryIndex.end()) {
-		Employee employee1;
 		employee1.readEmployee(employeeFile, primaryIndex[ID]);
-		employee1.print();
 	}
+	return employee1;
 }
 
-void getEmployeeByDep(int ID) {
+vector<Employee> getEmployeeByDep(int ID) {
 	map<int, vector<int>> secondaryIndex;
 	readSecondaryEmployee(secondaryIndex);
-    if (secondaryIndex.find(ID) != secondaryIndex.end()) {
-        for(auto employee: secondaryIndex[ID]) {
-            getEmployeeByID(employee);
-        }
-    }
-
+	vector<Employee> employees;
+	if (secondaryIndex.find(ID) != secondaryIndex.end()) {
+		for (auto employee: secondaryIndex[ID]) {
+			Employee Semployee = getEmployeeByID(employee);
+			if (Semployee.get_record_size() != -1)
+				employees.emplace_back(Semployee);
+		}
+	}
+	return employees;
 }
 
-void queryEmployee(string selected ,string attribute, string condition){
-    if(selected == "all")
-    {
-        if(attribute == "employeeid") {
-            int ID = stoi(condition);
-            getEmployeeByID(ID);
-        }
-        else {
-            int deptID = stoi(condition);
-            getEmployeeByDep(deptID);
-        }
-    }
-    
+void queryEmployee(string selected, string attribute, string condition) {
+
+	vector<Employee> selectedQuery;
+	if (attribute == "employeeid") {
+		int ID = stoi(condition);
+		Employee Semployee = getEmployeeByID(ID);
+		if (Semployee.get_record_size() != -1)
+			selectedQuery.emplace_back(Semployee);
+	} else {
+		int deptID = stoi(condition);
+		selectedQuery = getEmployeeByDep(deptID);
+	}
+
+
+	if (selectedQuery.empty()) {
+		cout << "Nothing to show.." << endl;
+		return;
+	}
+
+	if (selected == "all") {
+		for (auto &i: selectedQuery) {
+			i.print();
+		}
+	} else {
+		//employee id, department id, employee name, employee position
+		if (selected == "employeeid") {
+			for (auto &i: selectedQuery) {
+				cout << "Employee ID: " << i.get_emp_id() << "\n";
+			}
+		} else if (selected == "departmentid") {
+			for (auto &i: selectedQuery) {
+				cout << "Department ID: " << i.get_dept_id() << "\n";
+			}
+		} else if (selected == "employeename") {
+			for (auto &i: selectedQuery) {
+				cout << "Employee Name: " << i.get_emp_name() << "\n";
+			}
+		} else if (selected == "employeeposition") {
+			for (auto &i: selectedQuery) {
+				cout << "Employee Position: " << i.get_emp_pos() << "\n";
+			}
+		}
+	}
+
 }

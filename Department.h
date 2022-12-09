@@ -1,44 +1,45 @@
 #include <bits/stdc++.h>
+
 #define endl "\n"
 using namespace std;
 
 
-
-
 class Department {
 private:
-    char *dept_id = new char[30]; /// primary key
-    char *dept_name = new char[50]; ///secondary key
-    char *dept_man = new char[50];
-    char delim = '|';
-    int idSize;
-    int nameSize;
-    int manSize;
-    int RecordSize;
+	char *dept_id = new char[30]; /// primary key
+	char *dept_name = new char[50]; ///secondary key
+	char *dept_man = new char[50];
+	char delim = '|';
+	int idSize;
+	int nameSize;
+	int manSize;
+	int RecordSize;
 public:
-    Department(){}
+	Department() {
+		RecordSize = -1;
+	}
 
-    Department(const char *dept_id, const char *dept_name, const char *dept_man);
+	Department(const char *dept_id, const char *dept_name, const char *dept_man);
 
-    void set_dept_id(const char *dept_id);
+	void set_dept_id(const char *dept_id);
 
-    void set_dept_name(const char *dept_name);
+	void set_dept_name(const char *dept_name);
 
-    void set_dept_man(const char *dept_man);
+	void set_dept_man(const char *dept_man);
 
-    char *get_dept_id();
+	char *get_dept_id();
 
-    char *get_dept_name();
+	char *get_dept_name();
 
-    char *get_dept_man();
+	char *get_dept_man();
 
-    int get_record_size();
+	int get_record_size();
 
-    void print();
+	void print();
 
-    void writeDepartment(fstream &file);
+	void writeDepartment(fstream &file);
 
-    void readDepartment(fstream &file, int offset);
+	void readDepartment(fstream &file, int offset);
 };
 
 Department *takeDepartmentInfo();
@@ -55,8 +56,8 @@ void writeSecondaryDepartment(map<string, vector<int>> &secIndex);
 
 void readSecondaryDepartment(map<string, vector<int>> &sec);
 
-void getDepartmentByID(int ID);
+Department getDepartmentByID(int ID);
 
-void getDepartmentByName(string deptName);
+vector<Department> getDepartmentByName(string deptName);
 
-void queryDepartment(string selected ,string attribute, string condition);
+void queryDepartment(string selected, string attribute, string condition);
