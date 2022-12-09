@@ -80,12 +80,12 @@ clean: CMakeFiles/filesProject.dir/clean
 CMakeFiles/filesProject.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\filesProject.dir\build.make CMakeFiles/filesProject.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\filesProject.dir\build.make CMakeFiles/filesProject.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="F:\UNI\3rd\1st semester\Files\Assignments\Assignment1\DatabaseUsingFiles\cmake-build-debug\CMakeFiles" --progress-num=1,2,3 "Built target filesProject"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="F:\UNI\3rd\1st semester\Files\Assignments\Assignment1\DatabaseUsingFiles\cmake-build-debug\CMakeFiles" --progress-num=1,2,3,4 "Built target filesProject"
 .PHONY : CMakeFiles/filesProject.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/filesProject.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "F:\UNI\3rd\1st semester\Files\Assignments\Assignment1\DatabaseUsingFiles\cmake-build-debug\CMakeFiles" 3
+	$(CMAKE_COMMAND) -E cmake_progress_start "F:\UNI\3rd\1st semester\Files\Assignments\Assignment1\DatabaseUsingFiles\cmake-build-debug\CMakeFiles" 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/filesProject.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "F:\UNI\3rd\1st semester\Files\Assignments\Assignment1\DatabaseUsingFiles\cmake-build-debug\CMakeFiles" 0
 .PHONY : CMakeFiles/filesProject.dir/rule

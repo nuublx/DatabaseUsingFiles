@@ -3,8 +3,7 @@
 #define endl "\n"
 using namespace std;
 
-#ifndef FILESPROJECT_EMPLOYEE_H
-#define FILESPROJECT_EMPLOYEE_H
+
 
 
 class Employee {
@@ -70,4 +69,3 @@ void getEmployeeByDep(int ID);
 
 void readSecondaryEmployee(map<int, vector<int>> &sec);
 
-#endif //FILESPROJECT_EMPLOYEE_H

@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles/Department.cpp">
+			<Option target="filesProject"/>
+		</Unit>
+		<Unit filename="F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles/Department.h">
+			<Option target="filesProject"/>
+		</Unit>
 		<Unit filename="F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles/Employee.cpp">
 			<Option target="filesProject"/>
 		</Unit>

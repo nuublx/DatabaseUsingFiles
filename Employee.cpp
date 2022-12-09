@@ -7,11 +7,11 @@ using namespace std;
 
 
 int arrsize(char *arr) {
-	int number = 0;
-	while (*arr++) {
-		number++;
-	}
-	return number;
+    int number = 0;
+    while (*arr++) {
+        number++;
+    }
+    return number;
 }
 
 Employee::Employee(const char *emp_id, const char *dept_id, const char *emp_name, const char *emp_pos) {

@@ -1,104 +1,9 @@
 #include <bits/stdc++.h>
 #include "Employee.h"
+#include "Department.h"
 
 #define endl "\n"
 using namespace std;
-#define DELETE_FLAG '$'
-
-
-class Department {
-private:
-	char *dept_id = new char[30]; /// primary key
-	char *dept_name = new char[50]; ///secondary key
-	char *dept_man = new char[50];
-	char delim = '|';
-	int idSize{};
-	int nameSize{};
-	int manSize{};
-	int RecordSize{};
-public:
-	Department() = default;
-
-	Department(const char *dept_id, const char *dept_name, const char *dept_man) {
-		strcpy(this->dept_id, dept_id);
-		strcpy(this->dept_name, dept_name);
-		strcpy(this->dept_man, dept_man);
-		idSize = arrsize(this->get_dept_id());
-		nameSize = arrsize(this->get_dept_name());
-		manSize = arrsize(this->get_dept_man());
-		RecordSize = idSize + nameSize + manSize;
-	}
-
-	void set_dept_id(const char *dept_id) {
-		strcpy(this->dept_id, dept_id);
-	}
-
-	void set_dept_name(const char *dept_name) {
-		strcpy(this->dept_name, dept_name);
-	}
-
-	void set_dept_man(const char *dept_man) {
-		strcpy(this->dept_man, dept_man);
-	}
-
-	char *get_dept_id() {
-		return this->dept_id;
-	}
-
-	char *get_dept_name() {
-		return this->dept_name;
-	}
-
-	char *get_dept_man() {
-		return this->dept_man;
-	}
-
-	void print() {
-		cout << "Department ID: " << this->get_dept_id() << endl;
-		cout << "Department name: " << this->get_dept_name() << endl;
-		cout << "Department Manager: " << this->get_dept_man() << endl;
-		cout << "-------------------------------------------------\n";
-	}
-
-	void writeDepartment(fstream &file) {
-
-		file << (RecordSize + 4);
-
-		file << delim;
-
-		file.write(this->get_dept_id(), idSize);
-
-		file << delim;
-
-		file.write(this->get_dept_name(), nameSize);
-
-		file << delim;
-
-		file.write(this->get_dept_man(), manSize);
-
-		file << delim;
-	}
-
-	void readDepartment(ifstream &file) {
-		string x;
-		char c;
-		int nextDel = -1;
-
-		if (c == DELETE_FLAG) {
-			cout << "deleted record" << endl;
-			return;
-		}
-		getline(file, x, '|');
-		this->RecordSize = stoi(x);
-		getline(file, x, '|');
-		this->set_dept_id(x.c_str());
-		getline(file, x, '|');
-		this->set_dept_name(x.c_str());
-		getline(file, x, '|');
-		this->set_dept_man(x.c_str());
-	}
-};
-
 
 ///Some Random Names to make data look real
 string names[] = {"Zeyad D.", "Youssef W.", "Yahia H.", "Yahia A.", "David M.", "Ahmed M.", "Ahmed N.", "Eyad R.",
@@ -120,10 +25,10 @@ void fillEmployees(fstream &file) { ///fills Employees Array
         cout << endl;
     }
 }
- */
+
 Department *departments[6];
 
-/*
+
 void readSecondaryEmployee(  map<int, vector<int>> secIndex) {
     fstream Index;
     string read1, read2;
@@ -142,7 +47,7 @@ void readSecondaryEmployee(  map<int, vector<int>> secIndex) {
     }
     Index.close();
 }
- */
+
 
 void fillDepartments(fstream &file) { ///fills Departments Array
 	for (int i = 1; i <= 5; i++) {
@@ -152,16 +57,20 @@ void fillDepartments(fstream &file) { ///fills Departments Array
 		cout << endl;
 	}
 }
+ */
 
 void Menu() {
 
 	cout << "1-Add a New Employee." << endl;
 	cout << "2-search for an Employee by ID." << endl;
 	cout << "3-search for an Employee by Department ID." << endl;
-	cout << "4-Exit." << endl;
+	cout << "4-Add a New Department." << endl;
+	cout << "5-search for a Department by ID." << endl;
+	cout << "6-search for a Department by Name." << endl;
+	cout << "7-Exit." << endl;
 	int choice;
 	cin >> choice;
-	while (choice != 4) {
+	while (choice != 7) {
 		switch (choice) {
 			case 1: {
 				addNewEmployee();
@@ -181,21 +90,43 @@ void Menu() {
                 getEmployeeByDep(ID);
                 break;
             }
+            case 4: {
+                addNewDepartment();
+                break;
+            }
+            case 5: {
+                cout << "Enter Department ID: ";
+                int ID;
+                cin >> ID;
+                getDepartmentByID(ID);
+                break;
+            }
+            case 6: {
+                cout << "Enter Department Name: ";
+                string deptName;
+                cin >> deptName;
+                getDepartmentByName(deptName);
+                break;
+            }
 			default:
 				break;
 		}
 		cout << "1-Add a New Employee." << endl;
 		cout << "2-search for an Employee by ID." << endl;
         cout << "3-search for an Employee by Department ID." << endl;
-        cout << "4-Exit." << endl;
+        cout << "4-Add a New Department." << endl;
+        cout << "5-search for a Department by ID." << endl;
+        cout << "6-search for a Department by Name." << endl;
+        cout << "7-Exit." << endl;
 		cin >> choice;
 	}
 }
 
 int main() {
 //	Menu(); ///generate 10 Employees and 5 departments
-	map<int, vector<int>> mp;
+	map<string , vector<int>> mp;
 	Menu();
-	readSecondaryEmployee(mp);
+	//readSecondaryEmployee(mp);
+    readSecondaryDepartment(mp);
 	return 0;
 }
