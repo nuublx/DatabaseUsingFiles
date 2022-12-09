@@ -1,3 +1,3 @@
-X:/filesProject/cmake-build-debug/CMakeFiles/filesProject.dir
-X:/filesProject/cmake-build-debug/CMakeFiles/edit_cache.dir
-X:/filesProject/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles/cmake-build-debug/CMakeFiles/filesProject.dir
+F:/UNI/3rd/1st semester/Files/Assignments/Assignment1/DatabaseUsingFiles/cmake-build-debug/CMakeFiles/edit_cache.dir

@@ -177,6 +177,7 @@ void writeSecondaryEmployee(map<int, vector<int>> &secIndex) {
 	int lastOffset = 0;
 	for (auto it: secIndex) {
 		IndexKey << it.first << '|';
+        sort(it.second.begin(), it.second.end());
 		int currPos = (int) IndexList.tellp();
 		bool f = false;
 		if (it.second.size() == 1) {

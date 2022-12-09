@@ -194,6 +194,7 @@ void writeSecondaryDepartment(map<string, vector<int>> &secIndex) {
 	int lastOffset = 0;
 	for (auto it: secIndex) {
 		IndexKey << it.first << '|';
+        sort(it.second.begin(), it.second.end());
 		int currPos = (int) IndexList.tellp();
 		bool f = false;
 		if (it.second.size() == 1) {
@@ -251,13 +252,7 @@ void readSecondaryDepartment(map<string, vector<int>> &sec) {
 		}
 		sec.insert(make_pair(deptName, deptIDS));
 	}
-	for (const auto &it: sec) {
-		cout << it.first << '\t';
-		for (auto it2: it.second) {
-			cout << it2 << " ";
-		}
-		cout << endl;
-	}
+
 	IndexKey.close();
 	IndexList.close();
 }
