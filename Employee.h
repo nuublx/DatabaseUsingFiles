@@ -69,3 +69,5 @@ void getEmployeeByDep(int ID);
 
 void readSecondaryEmployee(map<int, vector<int>> &sec);
 
+void queryEmployee(string selected ,string attribute, string condition);
+

@@ -59,4 +59,4 @@ void getDepartmentByID(int ID);
 
 void getDepartmentByName(string deptName);
 
-
+void queryDepartment(string selected ,string attribute, string condition);

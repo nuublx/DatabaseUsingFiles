@@ -269,3 +269,18 @@ void getDepartmentByName(string deptName) {
 
 }
 
+void queryDepartment(string selected ,string attribute, string condition){
+    if(selected == "all")
+    {
+        if(attribute == "deptid") {
+            int ID = stoi(condition);
+            getDepartmentByID(ID);
+        }
+        else {
+            string deptName = condition;
+            getDepartmentByName(deptName);
+        }
+    }
+
+}
+

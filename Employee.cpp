@@ -306,3 +306,18 @@ void getEmployeeByDep(int ID) {
     }
 
 }
+
+void queryEmployee(string selected ,string attribute, string condition){
+    if(selected == "all")
+    {
+        if(attribute == "employeeid") {
+            int ID = stoi(condition);
+            getEmployeeByID(ID);
+        }
+        else {
+            int deptID = stoi(condition);
+            getEmployeeByDep(deptID);
+        }
+    }
+    
+}

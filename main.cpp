@@ -59,6 +59,34 @@ void fillDepartments(fstream &file) { ///fills Departments Array
 }
  */
 
+string lowercase(string query)
+{
+    string temp = "";
+    for (int x=0; x<query.length(); x++) {
+        if (isalpha(query[x]))
+            temp+= tolower(query[x]);
+        else if(isdigit(query[x]))
+            temp+=query[x];
+    }
+    return temp;
+}
+void query()
+{
+    cout<<"Enter Query: ";
+    string query[8];
+    for (int i = 0; i < 8; ++i) {
+        cin>>query[i];
+    }
+    //cout<<lowercase(query[5])<<endl;
+    if(lowercase(query[3]) == "employee"){
+        queryEmployee(lowercase(query[1]), lowercase(query[5]),lowercase(query[7]));
+    }
+
+
+
+    
+}
+
 void Menu() {
 
 	cout << "1-Add a New Employee." << endl;
@@ -67,10 +95,11 @@ void Menu() {
 	cout << "4-Add a New Department." << endl;
 	cout << "5-search for a Department by ID." << endl;
 	cout << "6-search for a Department by Name." << endl;
-	cout << "7-Exit." << endl;
+	cout << "7-Query." << endl;
+	cout << "8-Exit." << endl;
 	int choice;
 	cin >> choice;
-	while (choice != 7) {
+	while (choice != 8) {
 		switch (choice) {
 			case 1: {
 				addNewEmployee();
@@ -108,6 +137,10 @@ void Menu() {
                 getDepartmentByName(deptName);
                 break;
             }
+            case 7: {
+                query();
+                break;
+            }
 			default:
 				break;
 		}
@@ -117,7 +150,8 @@ void Menu() {
         cout << "4-Add a New Department." << endl;
         cout << "5-search for a Department by ID." << endl;
         cout << "6-search for a Department by Name." << endl;
-        cout << "7-Exit." << endl;
+        cout << "7-Query." << endl;
+        cout << "8-Exit." << endl;
 		cin >> choice;
 	}
 }
