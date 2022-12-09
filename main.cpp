@@ -52,14 +52,25 @@ void Menu() {
 				cout << "Enter Employee ID: ";
 				int ID;
 				cin >> ID;
-				getEmployeeByID(ID);
+				Employee emp = getEmployeeByID(ID);
+                if(emp.get_record_size()==-1)
+                    cout << "Nothing to show.." << endl;
+                else
+                    emp.print();
 				break;
 			}
 			case 3: {
 				cout << "Enter Department ID: ";
 				int ID;
 				cin >> ID;
-				getEmployeeByDep(ID);
+                vector<Employee> res = getEmployeeByDep(ID);
+                if (res.empty())
+                    cout << "Nothing to show.." << endl;
+                else {
+                    for (auto &i: res) {
+                        i.print();
+                    }
+                }
 				break;
 			}
 			case 4: {
@@ -70,14 +81,26 @@ void Menu() {
 				cout << "Enter Department ID: ";
 				int ID;
 				cin >> ID;
-				getDepartmentByID(ID);
+				Department dep = getDepartmentByID(ID);
+                if(dep.get_record_size()==-1)
+                    cout << "Nothing to show.." << endl;
+                else
+                    dep.print();
 				break;
 			}
 			case 6: {
 				cout << "Enter Department Name: ";
 				string deptName;
 				cin >> deptName;
-				getDepartmentByName(deptName);
+                vector<Department> res = getDepartmentByName(deptName);
+                if (res.empty())
+                    cout << "Nothing to show.." << endl;
+                else {
+                    for (auto &i: res) {
+                        i.print();
+                    }
+                }
+
 				break;
 			}
 			case 7: {
